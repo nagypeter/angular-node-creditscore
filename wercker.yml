@@ -77,9 +77,7 @@ testapp:
               fi
 
 ui-functional-test:
-  box:
-    id: caltha/protractor
-    cmd: /bin/sh
+  box: caltha/protractor
   steps:
     - script:
         name: Run application and test UI
