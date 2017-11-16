@@ -7,6 +7,8 @@ metadata:
     ingress.kubernetes.io/add-base-url: 'true'
     ingress.kubernetes.io/rewrite-target: /
 spec:
+  tls:
+  - secretName: tls-secret
   rules:
   - http:
       paths:
