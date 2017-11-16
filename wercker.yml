@@ -3,7 +3,7 @@ build:
   steps:
     - script:
         name: A step that executes `npm install` command
-        code: npm-install  
+        code: npm install  
     - script:
         name: Create TLS key and cert
         code: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"
