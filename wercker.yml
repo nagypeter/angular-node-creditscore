@@ -14,7 +14,7 @@ push-to-releases:
     - internal/docker-push:
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         repository: wcr.io/$WERCKER_APPLICATION_OWNER_NAME/creditscoreapp
-        cmd: node $WERCKER_ROOT/app.js
+        cmd: node /pipeline/source/app.js
 
 deploy-to-oke:
   box:
