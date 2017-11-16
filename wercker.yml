@@ -77,8 +77,9 @@ testapp:
               fi
 
 ui-functional-test:
-  #box: webnicer/protractor-headless
-  box: hortonworks/docker-e2e-protractor
+  box:
+    id: webnicer/protractor-headless
+    cmd: /bin/sh
   steps:
     - script:
         name: Run application and test UI
