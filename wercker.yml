@@ -1,0 +1,77 @@
+box: node:6.10
+build:
+  steps:
+    - script:
+        name: A step that executes `npm install` command
+        code: npm-install  
+    - script:
+        name: Create TLS key and cert
+        code: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=nginxsvc/O=nginxsvc"
+
+push-to-releases:
+  steps:
+    # Push to public docker repo Container Registry (CR)
+    - internal/docker-push:
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        repository: wcr.io/$WERCKER_APPLICATION_OWNER_NAME/creditscoreapp
+        cmd: node $WERCKER_ROOT/app.js
+
+deploy-to-oke:
+  box:
+        id: alpine
+        cmd: /bin/sh
+  steps:
+    - bash-template
+    - kubectl:
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete namespace $WERCKER_APPLICATION_OWNER_NAME --ignore-not-found=true
+    - script:
+        name: wait to delete namespace
+        code: sleep 30
+    - kubectl:
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create namespace $WERCKER_APPLICATION_OWNER_NAME
+    - kubectl:
+        name: create OCR secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret docker-registry wrelease --docker-server=wcr.io --docker-username=$WERCKER_APPLICATION_OWNER_NAME --docker-password=$DOCKER_PASSWORD --docker-email=${WERCKER_APPLICATION_OWNER_NAME}@mail.com --namespace=$WERCKER_APPLICATION_OWNER_NAME
+    - kubectl:
+        name: create TLS secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret tls tls-secret --key $WERCKER_ROOT/tls.key --cert $WERCKER_ROOT/tls.crt --namespace=$WERCKER_APPLICATION_OWNER_NAME
+    - kubectl:
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
+    - kubectl:
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create -f $WERCKER_ROOT/ingress.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
+
+testapp:
+  steps:
+    - script:
+        name: Run and Test microservice
+        code: | 
+              node $WERCKER_ROOT/app.js &
+              sleep 10
+              CREDITSCORE_URL=http://localhost:8080/creditscore
+              echo 'Microservice URL=' $CREDITSCORE_URL
+              if curl -X POST -H "Content-Type: application/json" -X POST -d '{"firstname":"John","lastname":"Doe","dateofbirth":"01/01/2015","ssn":"111223333"}' $CREDITSCORE_URL | grep "firstname"
+              then
+                  # if the keyword is in the conent
+                  echo "Test passed"
+              else
+                  echo "Test failed"
+                  exit -1
+              fi

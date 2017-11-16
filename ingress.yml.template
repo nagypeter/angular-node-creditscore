@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rest-jscreditscore-ing
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    ingress.kubernetes.io/add-base-url: 'true'
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /$WERCKER_APPLICATION_OWNER_NAME/
+        backend:
+          serviceName: rest-jscreditscore-svc
+          servicePort: 8088
