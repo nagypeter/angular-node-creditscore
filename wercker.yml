@@ -86,6 +86,7 @@ ui-functional-test:
               CREDITSCORE_URL=http://localhost:3000/creditscore
               echo 'Microservice URL=' $CREDITSCORE_URL
               webdriver-manager start &
+              sleep 5
               protractor $WERCKER_ROOT/test/protractor.conf.js
               
               
