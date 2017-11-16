@@ -62,7 +62,8 @@ testapp:
   steps:
     - script:
         name: Run and Test microservice
-        code: | 
+        code: |
+              mkdir -p "/pipeline"
               node $WERCKER_ROOT/app.js &
               sleep 10
               CREDITSCORE_URL=http://localhost:8080/creditscore
