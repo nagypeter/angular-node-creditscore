@@ -75,3 +75,19 @@ testapp:
                   echo "Test failed"
                   exit -1
               fi
+
+ui-functional-test:
+  box:
+    id: caltha/protractor
+    cmd: /bin/sh
+  steps:
+    - script:
+        name: Run application and test UI
+        code: | 
+              node $WERCKER_ROOT/app.js &
+              CREDITSCORE_URL=http://localhost:3000/creditscore
+              echo 'Microservice URL=' $CREDITSCORE_URL
+              
+              protractor $WERCKER_ROOT/test/protractor.conf.js
+              
+              
