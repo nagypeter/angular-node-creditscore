@@ -1,6 +1,6 @@
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  specs: ['$WERCKER_ROOT/test/*.spec.js'],
+  specs: ['$WERCKER_ROOT/test/creditscore.spec.js'],
   capabilities: {
     browserName: 'chrome',
 
