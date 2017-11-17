@@ -79,7 +79,7 @@ testapp:
 
 ui-functional-test:
   box:
-    id: peternagy/wercker-protractor-headless:chrome59
+    id: peternagy/wercker-protractor-headless:chrome59-1
   steps:
     - script:
         name: Run application and test UI
@@ -87,7 +87,6 @@ ui-functional-test:
               node $WERCKER_ROOT/app.js &
               CREDITSCORE_URL=http://localhost:3000/creditscore
               echo 'Microservice URL=' $CREDITSCORE_URL
-              export DBUS_SESSION_BUS_ADDRESS=/dev/null
-              webdriver-manager start &
+              nohup webdriver-manager start &
               sleep 5
-              protractor $WERCKER_ROOT/test/protractor.conf.js
+              /protractor.sh $WERCKER_ROOT/test/protractor.conf.js
