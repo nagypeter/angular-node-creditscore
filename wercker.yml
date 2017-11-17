@@ -79,8 +79,7 @@ testapp:
 
 ui-functional-test:
   box:
-    id: peternagy/wercker-protractor-headless:chrome59-1
-    cmd: /bin/sh
+    id: peternagy/wercker-protractor-headless:chrome59
   steps:
     - script:
         name: Run application and test UI
