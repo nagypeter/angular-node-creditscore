@@ -79,7 +79,7 @@ testapp:
 
 ui-functional-test:
   box:
-    id: webnicer/protractor-headless
+    id: peternagy/wercker-protractor-headless:chrome59-1
     cmd: /bin/sh
   steps:
     - script:
