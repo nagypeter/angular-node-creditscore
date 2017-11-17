@@ -1,6 +1,6 @@
 describe('Credit Score AngularJS demo web application test', function() {
   it('Test scoring', function() {
-    browser.get('http://127.0.0.1:3000/');
+    browser.get('http://localhost:3000/');
 
     expect(browser.getTitle()).toEqual('AngularJS + NodeJS');
     element(by.model('ctrl.user.firstname')).sendKeys('Peter');
