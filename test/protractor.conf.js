@@ -1,4 +1,5 @@
 exports.config = {
+  directConnect: true,
   seleniumAddress: 'http://localhost:4444/wd/hub',
   specs: ['$WERCKER_ROOT/test/creditscore.spec.js'],
   capabilities: {
