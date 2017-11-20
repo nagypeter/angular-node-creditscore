@@ -84,8 +84,9 @@ ui-functional-test:
     - script:
         name: Run application and test UI
         code: | 
-              node $WERCKER_ROOT/app.js &
-              CREDITSCORE_URL=http://localhost:3000/creditscore
-              echo 'Microservice URL=' $CREDITSCORE_URL
-              echo ${WERCKER_SOURCE_DIR}/test/creditscore.spec.js
+              nohup node $WERCKER_ROOT/app.js > creditscoreapp.log &
+              echo 'Microservice URL to test: http://localhost:3000/creditscore'
               protractor $WERCKER_ROOT/test/protractor.conf.js
+              echo 'CreditScore app log:::'
+              cat creditscoreapp.log
+              echo 'CreditScore app log :::END'
