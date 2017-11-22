@@ -88,8 +88,9 @@ ui-functional-test:
               echo 'Application URL to test: http://localhost:3000/creditscore'
               protractor $WERCKER_ROOT/test/protractor.conf.js
               exit_status=$?
-              echo 'CreditScore app log:::' $exit_status
-              echo 'CreditScore app log :::END'
+              echo 'CreditScore app server log :::START'
+              cat creditscoreapp.log
+              echo 'CreditScore app server log :::END'
               if [ $exit_status -eq 0 ]; then
                 echo "UI test passed"
               else
