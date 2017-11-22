@@ -79,14 +79,21 @@ testapp:
 
 ui-functional-test:
   box:
-    id: peternagy/wercker-protractor-headless:chrome59-1
+    id: peternagy/chrome-protractor-headless-test:node9.2-chrome62
   steps:
     - script:
-        name: Run application and test UI
+        name: Run UI test
         code: | 
               nohup node $WERCKER_ROOT/app.js > creditscoreapp.log &
-              echo 'Microservice URL to test: http://localhost:3000/creditscore'
+              echo 'Application URL to test: http://localhost:3000/creditscore'
               protractor $WERCKER_ROOT/test/protractor.conf.js
-              echo 'CreditScore app log:::'
-              cat creditscoreapp.log
+              exit_status=$?
+              echo 'CreditScore app log:::' $exit_status
               echo 'CreditScore app log :::END'
+              if [ $exit_status -eq 0 ]; then
+                echo "UI test passed"
+              else
+                echo "UI test failed"
+                exit -1
+              fi                
+              
