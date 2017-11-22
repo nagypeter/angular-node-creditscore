@@ -1,5 +1,5 @@
 describe('Test UI: browser title', function() {
-  it('AngularJS + Spring Boot', function() {
+  it('AngularJS + NodeJS', function() {
     browser.get('http://localhost:3000/');
 
     expect(browser.getTitle()).toEqual('AngularJS + NodeJS');
