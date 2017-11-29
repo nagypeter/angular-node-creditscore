@@ -84,7 +84,7 @@ deploy-to-oke:
         command: get svc -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}' --all-namespaces
 
     - script:
-        name: Get LoadBalancer's public IP address
+        name: Get LoadBalancer public IP address
         code: printf "\033[0;31m Public IP ADDRESS: $(kubectl get svc -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}' --all-namespaces)\033[0m\n"
 
 rest-functional-test:
