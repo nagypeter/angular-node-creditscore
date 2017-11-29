@@ -77,7 +77,7 @@ deploy-to-oke:
         command: create -f $WERCKER_ROOT/ingress.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
         
     - kubectl:
-        name: get LoadBalancer's public IP address
+        name: get LoadBalancer public IP address
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
@@ -85,7 +85,7 @@ deploy-to-oke:
 
     - script:
         name: "Get LoadBalancer public IP address"
-        code: printf "\033[0;31m Public IP ADDRESS: $(kubectl get svc -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}' --all-namespaces)\033[0m\n"
+        code: echo -e "\033[0;31m Public IP ADDRESS: $(kubectl get svc -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}' --all-namespaces)\033[0m"
 
 rest-functional-test:
   steps:
