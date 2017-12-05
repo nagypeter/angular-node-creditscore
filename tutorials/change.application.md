@@ -16,7 +16,7 @@ The use case for Application Lifecycle Management is the following simplified sc
 
 ### Change the application source code ###
 
-First switch to the browser where [github.com](https://github.com) is opened (or open and sign in) find the `app.js` file in your *angular-node-creditscore* repository. You can reach this file directly too, just type the following URL: `https://github.com/GITHUB_USERNAME/angular-node-creditscore/blob/master/app.js`. Click on the pencil icon to edit.
+First switch to the browser where [github.com](https://github.com) is opened (or open and sign in) and find the `app.js` file in your *angular-node-creditscore* repository which defines the REST endpoint's context path. You can reach this file directly too, just type the following URL: `https://github.com/GITHUB_USERNAME/angular-node-creditscore/blob/master/app.js`. Click on the pencil icon to edit.
 
 ![alt text](images/wercker.change.01.png)
 
