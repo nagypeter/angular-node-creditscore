@@ -2,9 +2,19 @@
 
 Make sure you are signed in to [https://github.com](https://github.com) and [https://app.wercker.com](https://app.wercker.com). It is recommended to open two browser windows/tabs [https://github.com](https://github.com) and [https://app.wercker.com](https://app.wercker.com) because you need to use both of them in parallel.
 
+The use case for the simplified Continuous Integration/Continuous Deployment is the following using Oracle Container Pipelines:
+
+1. Get the application sources
+2. Build the application. (In case of Node.js it's about installation of packages.)
+3. Validate the application using functional test
+4. Store the containerized application to Oracle Container Registry 
+5. Deploy the application to Oracle Container Engine
+
 ### Fork the sample application sources ###
 
-First switch to the browser where github.com is opened and type the following URL into the address bar (or click on this link): [https://github.com/nagypeter/angular-node-creditscore](https://github.com/nagypeter/angular-node-creditscore). Click on **Fork** to fork the sample application to your repository.
+First you need a github.com based source code repository for the sample application what feeds the Oracle Container Pipelines. 
+
+Open the browser window/tab where github.com is opened and type the following URL into the address bar (or click on the link): [https://github.com/nagypeter/angular-node-creditscore](https://github.com/nagypeter/angular-node-creditscore). Click on **Fork** to fork the sample application to your repository.
 
 ![alt text](images/wercker.application.01.png)
 
