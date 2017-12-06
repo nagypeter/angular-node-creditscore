@@ -2,13 +2,158 @@
 
 Make sure you are signed in to [https://github.com](https://github.com) and [https://app.wercker.com](https://app.wercker.com). It is recommended to open two browser windows/tabs [https://github.com](https://github.com) and [https://app.wercker.com](https://app.wercker.com) because you need to use both of them in parallel.
 
-The use case for the simplified Continuous Integration/Continuous Deployment is the following using Oracle Container Pipelines:
+The use case for the simplified Continuous Integration/Continuous Deployment (CI/CD) is the following using Oracle Container Pipelines:
 
 1. Get the application sources
 2. Build the application. (In case of Node.js it's about installation of packages.)
 3. Validate the application using functional test
 4. Store the containerized application to Oracle Container Registry 
 5. Deploy the application to Oracle Container Engine
+
+###Create personal token###
+
+Before you start to setup the CI/CD workflow first you need to install and configure `kubectl` to access to your Oracle Container Engine instance (Kubernetes cluster). To configure `kubectl` and Oracle Container Pipelines (Wercker) you need an authentication token and *kubeconfig* which contains the connection specific information and settings.
+
+To create your personal token open [https://app.wercker.com](https://app.wercker.com) (sign in if necessary) and click on your profile image at the top right corner of the page, select **Your profile** and click on **Manage settings**.
+
+![alt text](images/wercker.application.16.png)
+
+On the left side select the **Personal tokens** menu item. Define a token name e.g. your username and click **Generate**.
+
+![alt text](images/wercker.application.17.png)
+
+Make sure to copy your token because you won't be able to get it again! Click **Done**.
+
+![alt text](images/wercker.application.18.png)
+
+###Install Kubernetes command line interface and connect to Oracle Container Engine instance###
+
+####Linux####
+
+Download the latest release with the following `curl` command:
+
+	$ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+	  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+	                                 Dload  Upload   Total   Spent    Left  Speed
+	100 49.9M  100 49.9M    0     0  4289k      0  0:00:11  0:00:11 --:--:-- 4150k
+	$ 
+
+Make the kubectl binary executable.
+
+	$ chmod +x ./kubectl
+	$
+
+Move the binary in to your PATH.
+
+	$ sudo mv ./kubectl /usr/local/bin/kubectl
+	$
+
+Verify the installation using the version command.
+
+	$ kubectl version
+	Client Version: version.Info{Major:"1", Minor:"8", GitVersion:"v1.8.4", GitCommit:"9befc2b8928a9426501d3bf62f72849d5cbcd5a3", GitTreeState:"clean", BuildDate:"2017-11-20T05:28:34Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"linux/amd64"}
+	The connection to the server localhost:8080 was refused - did you specify the right host or port?
+	$
+
+At this step the server connection failure is normal. For easier usage it is recommended to setup the autocomplete for bash.
+
+	$ source <(kubectl completion bash)
+
+####Windows####
+
+To find out the latest stable version (for example, for scripting), take a look at [https://storage.googleapis.com/kubernetes-release/release/stable.txt](https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+
+For example if latest stable version is: **v1.8.4** then construct the download link in the following way: *https://storage.googleapis.com/kubernetes-release/release/VERSION_NUMBER/bin/windows/amd64/kubectl.exe*. Thus in case of **v1.8.4** the link looks like this:
+
+[https://storage.googleapis.com/kubernetes-release/release/v1.8.4/bin/windows/amd64/kubectl.exe](https://storage.googleapis.com/kubernetes-release/release/v1.8.4/bin/windows/amd64/kubectl.exe)
+
+Once you have the executable binary add to your PATH variable.
+
+	set PATH=%PATH%;c:\download_folder\kubectl.exe
+
+Verify the installation using the version command.
+
+	C:\Users\pnagy>kubectl version
+	Client Version: version.Info{Major:"1", Minor:"7", GitVersion:"v1.7.0", GitCommit:"d3ada0119e776222f11ec7945e6d860061339aad", GitTreeState:"clean", BuildDate:"2
+	017-06-29T23:15:59Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"windows/amd64"}
+	Unable to connect to the server: dial tcp 192.168.99.100:8443: connectex: A connection attempt failed because the connected party did not properly respond after
+ 	a period of time, or established connection failed because connected host has failed to respond.
+
+After the successful installation you need to get the kubeconfig configuration file belongs to your cluster. 
+
+Change to browser where [https://app.wercker.com](https://app.wercker.com) openedand select **Clusters** and click on your cluster.
+
+![alt text](images/wercker.application.19.png)
+
+Click **Get Started** and **Download kubeconfig File**
+
+![alt text](images/wercker.application.30.png)
+
+When the the download finished open the *kubeconfig* file using your favourite text editor. The file content is something similar:
+
+	apiVersion: v1
+	clusters:
+	- cluster:
+	    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURqRENDQW5TZ0F3SUJBZ0lVQkdzTE5JT1RzdXA4ODdnNjJ....
+		kK3hpaGd4ZktSR29XS1oKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+	    server: https://c9f1b2bbcs1.prod.cluster.us-ashburn-1.oracledx.com:6443
+	  name: cluster-c9f1b2bbcs1
+	contexts:
+	- context:
+	    cluster: cluster-c9f1b2bbcs1
+	    user: user-c9f1b2bbcs1
+	  name: context-c9f1b2bbcs1
+	current-context: context-c9f1b2bbcs1
+	kind: ""
+	users:
+	- name: user-c9f1b2bbcs1
+	  user:
+	    token: IAMABANANAQUiQkWoz6NqJLmsumxxr12xHStGWRTU.Hw3azCHsZ8yDvsYQHudnKRi0jgumaCiyK5OnQK5Pp1Q 
+
+The *kubeconfig* file contains the necessary details and parameters to connect to Oracle Container Engine (Kubernetes cluster). The *clusters* parameter defines the available clusters. The minimum set of the properties are the address of the master node, the certification and it's name to refer. For later usage copy your server address. In the example above it is:*https://c9f1b2bbcs1.prod.cluster.us-ashburn-1.oracledx.com:6443*. The *users* parameter contains a generated temporary token which has has short expiration time. To avoid this expiration replace replace the *user token* to your private token what was generated in the previous step.
+
+	  user:
+	    token: 0d82df20e90bad4f8cd40ecc5ac5456c9f44238460edadc2a8b32108ce6bdf19
+
+Save the updated *kubeconfig*. 
+
+When execute a `kubectl` command first it tries to read the *kubeconfig* file from default location. For example on Linux it is `~/.kube`, but you can use *kubeconfig* file at different path and even with different name. Just set the configuration file location as KUBECONFIG environment variable in your command line terminal where you want to execute `kubectl` commands.
+
+Linux:
+
+	export KUBECONFIG=~/Downloads/kubeconfig
+
+Windows:
+
+	set KUBECONFIG=c:\Downloads\kubeconfig 
+
+Now `kubectl` is ready to use. Test again using the version option.
+
+	$ kubectl version
+	Client Version: version.Info{Major:"1", Minor:"8", GitVersion:"v1.8.4", GitCommit:"9befc2b8928a9426501d3bf62f72849d5cbcd5a3", GitTreeState:"clean", BuildDate:"2017-11-20T05:28:34Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"linux/amd64"}
+	Server Version: version.Info{Major:"1", Minor:"7+", GitVersion:"v1.7.4-2+af88312fe58fec", GitCommit:"af88312fe58fec576aed346d707bf58f0132ef2a", GitTreeState:"clean", BuildDate:"2017-10-24T20:06:27Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"linux/amd64"}
+	$ 
+ 
+Check the output, now it has to contain the server version information.
+
+### Kubectl Web UI (dashboard)  ###
+
+Dashboard is a web-based Kubernetes user interface what is deployed by default on Oracle Container Engine. You can use Dashboard to deploy containerized applications to a Kubernetes cluster, troubleshoot your containerized application, and manage the cluster itself along with its attendant resources. You can use Dashboard to get an overview of applications running on your cluster, as well as for creating or modifying individual Kubernetes resources (such as Deployments, Jobs, DaemonSets, etc).
+
+You can access Dashboard using the kubectl command-line tool by running the following command:
+
+	$ kubectl proxy
+	Starting to serve on 127.0.0.1:8001
+
+This command runs `kubectl` in a mode where it acts as a reverse proxy. It handles locating the apiserver and authenticating and make Dashboard available at [http://localhost:8001/ui](http://localhost:8001/ui). Please note the UI can only be accessed from the machine where the command is executed. Open the dashboard.
+
+![alt text](images/wercker.application.31.png)
+
+Dashboard shows most Kubernetes object kinds and groups them in a few menu categories.
+
+When there are Kubernetes objects defined in the cluster, Dashboard shows them in the initial view. By default only objects from the default namespace are shown and this can be changed using the namespace selector located in the navigation menu. Later your sample application will be deployed to a new namespace called your Oracle Container Pipelines (Wercker) username.
+
+Please leave open the dashboard you need later.
 
 ### Fork the sample application sources ###
 
@@ -151,39 +296,19 @@ Now define the test route of the workflow for non-master (patching) branches. Cl
 
 ![alt text](images/wercker.application.14.png)
 
-Now the simple workflow for devOps use case is ready and it has to look similar:
+Now the workflow for simple DevOps use case is ready.
 
 ![alt text](images/wercker.application.15.png)
 
-### Get configuration variable's values ###
-
-In this simple use case the configuration is minimalized as possible. You need only two parameters to run this workflow.
-
-First you need an authentication token to access to Oracle Container Registry and Engine. To create such personal token click on your profile image at the top right corner of the page, select **Your profile** and click on **Manage settings**.
-
-![alt text](images/wercker.application.16.png)
-
-On the left side select the **Personal tokens** menu item. Define a token name e.g. your username and click **Generate**.
-
-![alt text](images/wercker.application.17.png)
-
-Make sure to copy your token because you won't be able to get it again! Click **Done**.
-
-![alt text](images/wercker.application.18.png)
-
-The second configuration variable is the address of the Oracle Container Engine where you want to deploy your tested, production ready application.
-
-Select **Clusters** and copy the Kubernetes Address of the target cluster.
-
-![alt text](images/wercker.application.19.png)
-
 ### Define configuration variables ###
 
-To go back your application select **Pipelines** and your application (angular-node-creditscore). 
+The only thing what is missing to run the workflow is the enviroment configuration. The pipelines basically run within Oracle Container Pipelines but at the and of a successful build the workflow stores the packaged application to Oracle Container Releases (~Docker Registry) and deploy to Oracle Container Engine (Kubernetes Cluster) what require authentication and address. At the beginning of this tutorial you created personal token and gathered the Oracle Container Engine instance (master node) adddress. These two parameters will determine the deployment environment and ensure the access.
+
+Go back your application select **Pipelines** and your application (angular-node-creditscore). 
 
 ![alt text](images/wercker.application.20.png)
 
-Now you will define *global* scope variables, but you can have independent variables per pipelines. To make sure you define *global* scope variables click the **Workflow** tab then select **Environment** tab. Set the name and value pairs for the following configuration variables.
+The pipelines can have independent variables per pipelines or *global* scope variables. To simplify the configuration define *global* scope variables. Click the **Workflow** tab then select **Environment** tab. Set the name and value pairs for the following configuration variables.
 
 + **KUBERNETES\_ADDRESS** = Kubernetes Address with *https://* prefix
 + **KUBERNETES\_TOKEN** = your personal token
@@ -221,3 +346,135 @@ Due to the reason that the proper certification hasn't been configured you get a
 ![alt text](images/wercker.application.27.png)
 
 Test your Credit Score application using sample data.
+
+### Manage deployment using Kubernetes Web UI ###
+
+Find the browser window/tab where you left open [http://localhost:8001/ui](http://localhost:8001/ui). If you have any issue to open make sure your kubectl reverse is still running in one of your command line terminal.
+
+	$ kubectl proxy
+	Starting to serve on 127.0.0.1:8001
+
+Kubernetes supports multiple virtual clusters backed by the same physical cluster. These virtual clusters are called namespaces. Namespaces are intended for use in environments with many users spread across multiple teams, or projects. Namespaces provide a scope for names. Names of resources need to be unique within a namespace, but not across namespaces.
+
+The sample application's Kubernetes deployment configuration created a new namespace for your application. To filter the deployments according namespaces on Oracle Container Engine select your namespace, what is your Oracle Pipelines (Wercker) user name on the left navigation menu.
+
+![alt text](images/wercker.application.32.png)
+
+There you can see your Pods, Deployments, Services, etc. and their status. Basically your container deployed (rest-jscreditscore deployment) on a pod (rest-jscreditscore-25265xxxxxx pod) and exposed through a service (rest-jscreditscore-svc service). To have external IP address you created an Ingress rule (rest-jscreditscore-ing ingress) what configure your name as context path on the shared (common) Ingress controller. The shared Ingress controller is a NGINX deployment which has an External Public IP address.
+
+####Check the application's log 
+
+To open your application's log find your pod and click on the log icon. Now you have only one instance.
+
+![alt text](images/wercker.application.33.png)
+
+New browser window/tab opens and there you can see your application's log. The backend service write the incoming data and result to the log, so you can see your latest credit scoring in and outputs.
+
+![alt text](images/wercker.application.34.png)
+
+####Scale out horizontally your application
+
+Currently you have one application instance (pod) up and running what you deployed manually. Because of replica definition it created a Replica Set. A Replica Set ensures that a specified number of pod replicas are running at any one time. In other words, a Replica Sets makes sure that a pod or a homogeneous set of pods is always up and available. 
+
+To scale your application first use the dashboard. Find your *rest-jscreditscore* deployment and click on the option menu on the right side and select **Scale**.
+
+![alt text](images/wercker.application.35.png)
+
+Define the desired number of instances and click **OK** to confirm.
+
+![alt text](images/wercker.application.36.png)
+
+Wait till the new pod is up and running.
+
+![alt text](images/wercker.application.37.png)
+
+Open the Credit Score sample application and fill the necessary data using different values to easily distinct the service log.
+
+![alt text](images/wercker.application.38.png)
+
+Open the log of the newly started pod.
+
+![alt text](images/wercker.application.39.png)
+
+The log should include your new inputs. If the log is still empty -probably routed to the older instance- then push again the **Score** button on the sample application to invoke again the backend. Refres the browser window/tab where the new pod's log opened. Verify the data.
+
+![alt text](images/wercker.application.40.png)
+
+### Manage deployment using `kubectl` ###
+
+The dashboard is nice, but mostly CLI is the preferred tool. So let's get familiar with `kubectl` beyond the version command.
+
+####Scale in horizontally your application
+
+In the previous step you scaled out your application using the Web UI now shrink it using `kubectl`. Open a terminal and if necessary set KUBECONFIG variable to point your kubeconfig file location. First list your pods.
+
+	$ kubectl get pod -n=johnasmith
+	NAME                                  READY     STATUS    RESTARTS   AGE
+	rest-jscreditscore-2526588690-4tvrm   1/1       Running   0          1d
+	rest-jscreditscore-2526588690-cc38l   1/1       Running   0          16m
+
+The two running, healthy pods listed. To decrease the number of pods simply set a new size for Replica Set use the scale command and identify the Replica Set using your deployment name. Please note and change(!) properly your namespace's name before execute the scale command. (In this example the namespace is *johnasmith* what you need to change.)
+
+	$ kubectl scale --replicas=1 deployment/rest-jscreditscore -n=johnasmith
+	deployment "rest-jscreditscore" scaled
+
+The scale down is fast so probably when you refresh your Web UI (dashboard) you already can see only one pod is running. You can also check the number of pods using the previous *get pod* command. Instead of this get more detail about your deployment using the following command. (Don't forget to change the namespace parameter value.)
+
+	$ kubectl describe deployment rest-jscreditscore -n=johnasmith
+	Name:                   rest-jscreditscore
+	Namespace:              johnasmith
+	CreationTimestamp:      Mon, 04 Dec 2017 16:35:44 -0500
+	Labels:                 run=rest-jscreditscore
+	Annotations:            deployment.kubernetes.io/revision=1
+	Selector:               run=rest-jscreditscore
+	Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+	StrategyType:           RollingUpdate
+	MinReadySeconds:        0
+	RollingUpdateStrategy:  1 max unavailable, 1 max surge
+	Pod Template:
+	  Labels:  run=rest-jscreditscore
+	  Containers:
+	   rest-jscreditscore:
+	    Image:        wcr.io/johnasmith/angular-node-creditscore:master-fded509347eb44a3d82d93a021cb4439a158b09e
+	    Port:         3000/TCP
+	    Environment:  <none>
+	    Mounts:       <none>
+	  Volumes:        <none>
+	Conditions:
+	  Type           Status  Reason
+	  ----           ------  ------
+	  Available      True    MinimumReplicasAvailable
+	OldReplicaSets:  <none>
+	NewReplicaSet:   rest-jscreditscore-2526588690 (1/1 replicas created)
+	Events:
+	  Type    Reason             Age               From                   Message
+	  ----    ------             ----              ----                   -------
+	  Normal  ScalingReplicaSet  47s (x2 over 6h)  deployment-controller  Scaled down replica set rest-jscreditscore-2526588690 to 1
+
+This is a more detailed description of your deployment where you can see the count and status of *Replicas*.
+
+	Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+
+Please note the entry at the *Events*:
+
+	Events:
+	  Type    Reason             Age               From                   Message
+	  ----    ------             ----              ----                   -------
+	  Normal  ScalingReplicaSet  47s (x2 over 6h)  deployment-controller  Scaled down replica set rest-jscreditscore-2526588690 to 1
+
+The event is about the scale down operation.
+
+###Clean up - delete namespace
+
+The clean up is easy, simply delete your namespace what will destroy all the objects defined within your namespace. Using `kubectl` CLI issue the following command (Don't forget to replace the name of your namespace):
+
+	$ kubectl delete namespace johnasmith
+	namespace "johnasmith" deleted
+
+![alt text](images/wercker.application..png)
+![alt text](images/wercker.application..png)
+![alt text](images/wercker.application..png)
+![alt text](images/wercker.application..png)
+![alt text](images/wercker.application..png)
+![alt text](images/wercker.application..png)
+![alt text](images/wercker.application..png)
