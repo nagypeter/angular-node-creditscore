@@ -464,7 +464,7 @@ Please note the entry at the *Events*:
 
 The event is about the scale down operation.
 
-### Clean up (!)###
+### Clean up (!) ###
 
 The clean up is easy, simply delete your namespace what will destroy all the objects defined within your namespace. Using `kubectl` CLI issue the following command (Don't forget to replace the name of your namespace):
 
