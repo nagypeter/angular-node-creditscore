@@ -25,7 +25,7 @@ TODO
 - Setup and configure `kubectl`
 - [Ingress controller](https://github.com/nagypeter/kubernetes/tree/master/ingress)
 
-###The topics to be covered in this hands-on session are:###
+### The topics to be covered in this hands-on session are: ###
 
 1. [Create Oracle Container Pipeline to build, test and package sample application](sample.app.pipeline.md)
 2. [Application Lifecycle Management](change.application.md)
@@ -33,10 +33,10 @@ TODO
 4. Pod Autoscaling
 5. Use Oracle Container Repository
 
-####Extras:####
+#### Extras: ####
 
 1. User interface test using headless browser in container runtime enviroment.
 
-###License###
+### License ###
 Copyright (c) 2014, 2016 Oracle and/or its affiliates
 The Universal Permissive License (UPL), Version 1.0

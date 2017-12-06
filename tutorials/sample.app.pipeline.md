@@ -362,7 +362,7 @@ The sample application's Kubernetes deployment configuration created a new names
 
 There you can see your Pods, Deployments, Services, etc. and their status. Basically your container deployed (rest-jscreditscore deployment) on a pod (rest-jscreditscore-25265xxxxxx pod) and exposed through a service (rest-jscreditscore-svc service). To have external IP address you created an Ingress rule (rest-jscreditscore-ing ingress) what configure your name as context path on the shared (common) Ingress controller. The shared Ingress controller is a NGINX deployment which has an External Public IP address.
 
-####Check the application's log 
+#### Check the application's log #### 
 
 To open your application's log find your pod and click on the log icon. Now you have only one instance.
 
@@ -372,7 +372,7 @@ New browser window/tab opens and there you can see your application's log. The b
 
 ![alt text](images/wercker.application.34.png)
 
-####Scale out horizontally your application
+#### Scale out horizontally your application ####
 
 Currently you have one application instance (pod) up and running what you deployed manually. Because of replica definition it created a Replica Set. A Replica Set ensures that a specified number of pod replicas are running at any one time. In other words, a Replica Sets makes sure that a pod or a homogeneous set of pods is always up and available. 
 
@@ -404,7 +404,7 @@ The log should include your new inputs. If the log is still empty -probably rout
 
 The dashboard is nice, but mostly CLI is the preferred tool. So let's get familiar with `kubectl` beyond the version command.
 
-####Scale in horizontally your application
+#### Scale in horizontally your application ####
 
 In the previous step you scaled out your application using the Web UI now shrink it using `kubectl`. Open a terminal and if necessary set KUBECONFIG variable to point your kubeconfig file location. First list your pods.
 
@@ -464,17 +464,9 @@ Please note the entry at the *Events*:
 
 The event is about the scale down operation.
 
-###Clean up - delete namespace
+### Clean up (!)###
 
 The clean up is easy, simply delete your namespace what will destroy all the objects defined within your namespace. Using `kubectl` CLI issue the following command (Don't forget to replace the name of your namespace):
 
 	$ kubectl delete namespace johnasmith
 	namespace "johnasmith" deleted
-
-![alt text](images/wercker.application..png)
-![alt text](images/wercker.application..png)
-![alt text](images/wercker.application..png)
-![alt text](images/wercker.application..png)
-![alt text](images/wercker.application..png)
-![alt text](images/wercker.application..png)
-![alt text](images/wercker.application..png)
