@@ -242,7 +242,7 @@ Please also note the environment variables ($KUBERNETES_MASTER, $KUBERNETES_MAST
 
 ### Define CI/CD workflow ###
 
-In this use case our CI/CD workflow has to routes. One for non-master (any patch) branch to test the application changes. The a second one for master branch to store and deploy the modified and tested application.
+In this use case our CI/CD workflow has two potential forked routes of the flow. One for non-master (any patch) branch to test the application changes. The a second one for master branch to store and deploy the modified and tested application.
 
 Now select the **Workflow** tab and define the first pipeline. As mentioned upon creating a project in Wercker, it creates a *build* Workflow with a Git hook which executes a build pipeline. This means whenever you push changes into your github repository then a new build will be triggered. Now add a new pipeline what will do the Docker container image push to Oracle Container Registry. Click **Add new pipeline**.
 
