@@ -10,7 +10,7 @@ The use case for the simplified Continuous Integration/Continuous Deployment (CI
 4. Store the containerized application to Oracle Container Registry 
 5. Deploy the application to Oracle Container Engine
 
-###Create personal token###
+### Create personal token ###
 
 Before you start to setup the CI/CD workflow first you need to install and configure `kubectl` to access to your Oracle Container Engine instance (Kubernetes cluster). To configure `kubectl` and Oracle Container Pipelines (Wercker) you need an authentication token and *kubeconfig* which contains the connection specific information and settings.
 
@@ -26,9 +26,9 @@ Make sure to copy your token because you won't be able to get it again! Click **
 
 ![alt text](images/wercker.application.18.png)
 
-###Install Kubernetes command line interface and connect to Oracle Container Engine instance###
+### Install Kubernetes command line interface and connect to Oracle Container Engine instance ###
 
-####Linux####
+#### Linux ####
 
 Download the latest release with the following `curl` command:
 
@@ -36,32 +36,28 @@ Download the latest release with the following `curl` command:
 	  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
 	                                 Dload  Upload   Total   Spent    Left  Speed
 	100 49.9M  100 49.9M    0     0  4289k      0  0:00:11  0:00:11 --:--:-- 4150k
-	$ 
 
 Make the kubectl binary executable.
 
 	$ chmod +x ./kubectl
-	$
 
 Move the binary in to your PATH.
 
 	$ sudo mv ./kubectl /usr/local/bin/kubectl
-	$
 
 Verify the installation using the version command.
 
 	$ kubectl version
 	Client Version: version.Info{Major:"1", Minor:"8", GitVersion:"v1.8.4", GitCommit:"9befc2b8928a9426501d3bf62f72849d5cbcd5a3", GitTreeState:"clean", BuildDate:"2017-11-20T05:28:34Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"linux/amd64"}
 	The connection to the server localhost:8080 was refused - did you specify the right host or port?
-	$
 
 At this step the server connection failure is normal. For easier usage it is recommended to setup the autocomplete for bash.
 
 	$ source <(kubectl completion bash)
 
-####Windows####
+#### Windows ####
 
-To find out the latest stable version (for example, for scripting), take a look at [https://storage.googleapis.com/kubernetes-release/release/stable.txt](https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+To find out the latest stable version take a look at [https://storage.googleapis.com/kubernetes-release/release/stable.txt](https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 
 For example if latest stable version is: **v1.8.4** then construct the download link in the following way: *https://storage.googleapis.com/kubernetes-release/release/VERSION_NUMBER/bin/windows/amd64/kubectl.exe*. Thus in case of **v1.8.4** the link looks like this:
 
@@ -136,7 +132,7 @@ Now `kubectl` is ready to use. Test again using the version option.
  
 Check the output, now it has to contain the server version information.
 
-### Kubectl Web UI (dashboard)  ###
+### Kubectl Web UI (dashboard) ###
 
 Dashboard is a web-based Kubernetes user interface what is deployed by default on Oracle Container Engine. You can use Dashboard to deploy containerized applications to a Kubernetes cluster, troubleshoot your containerized application, and manage the cluster itself along with its attendant resources. You can use Dashboard to get an overview of applications running on your cluster, as well as for creating or modifying individual Kubernetes resources (such as Deployments, Jobs, DaemonSets, etc).
 
@@ -187,7 +183,7 @@ Finally you can choose whether your application is public or not. We recommend t
 
 The next page offers to generate specific `wercker.yml` based on the application's language and the to start the build. The sample application already has a `wercker.yml`, but before the first build define the complete workflow which will deploy the application to Oracle Container Engine. 
 
-Before you move forward please inspect the *wercker.yml*. The source is available under your github repository. Open a new browser (tab) and go directly to *https://github.com/<YOUR_GITHUB_USERNAME>/nodejs-mongodb-crud/blob/master/wercker.yml*. The configuration should be the same:
+Before you move forward please inspect the *wercker.yml*. The source is available under your github repository. Open a new browser (tab) and go directly to *https://github.com/<YOUR_GITHUB_USERNAME>/angular-node-creditscore/blob/master/wercker.yml*. The configuration should be the same:
 
 	box: node:6.10
 	build:
@@ -362,7 +358,7 @@ The sample application's Kubernetes deployment configuration created a new names
 
 There you can see your Pods, Deployments, Services, etc. and their status. Basically your container deployed (rest-jscreditscore deployment) on a pod (rest-jscreditscore-25265xxxxxx pod) and exposed through a service (rest-jscreditscore-svc service). To have external IP address you created an Ingress rule (rest-jscreditscore-ing ingress) what configure your name as context path on the shared (common) Ingress controller. The shared Ingress controller is a NGINX deployment which has an External Public IP address.
 
-#### Check the application's log #### 
+#### Check the application's log ####
 
 To open your application's log find your pod and click on the log icon. Now you have only one instance.
 
