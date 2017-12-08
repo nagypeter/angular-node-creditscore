@@ -106,7 +106,7 @@ This commit to the master branch triggers the build workflow again. Change the b
 
 ### Check the application changes ###
 
-Finally test the application which now uses the new endpoint of the backend service. Open a new browser window/tab and open your sample application or reload if already opened. Use the following URL to open your application: `https://PUBLIC_IP_ADDRESS/USERNAME`. Where the USERNAME is your Oracle Container Pipelines (former Wercker) user name. It should be a similar to: `https://129.213.15.72/johnasmith`. (To get the Public IP address of the Ingress controller you need to click on the *deploy-to-Prod* pipeline in the completed workflow and open the *get LoadBalancer public IP address* step's log.)
+Finally test the application which now uses the new endpoint of the backend service. Open a new browser window/tab and open your sample application or reload if already opened. Use the following URL to open your application: `https://PUBLIC_IP_ADDRESS/USERNAME/`. Where the USERNAME is your Oracle Container Pipelines (former Wercker) user name. It should be a similar to: `https://129.213.15.72/johnasmith/`. (To get the Public IP address of the Ingress controller you need to click on the *deploy-to-Prod* pipeline in the completed workflow and open the *get LoadBalancer public IP address* step's log.)
 
 Before the application test open the browser's console using **Ctrl+Shift+I** and select the **Network** tab. Set the necessary fields and click **Score**. In the network console page you have to see the REST endpoint invocation which is `creditscoreV2`. You can see the complete backend service URL when you hover the mouse pointer on `creditscoreV2` network event. Please note the `V2` postfix in the complete URL.
 
