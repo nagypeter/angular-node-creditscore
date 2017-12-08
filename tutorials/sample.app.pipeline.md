@@ -113,7 +113,7 @@ The *kubeconfig* file contains the necessary details and parameters to connect t
 
 Save the updated *kubeconfig*. 
 
-When execute a `kubectl` command first it tries to read the *kubeconfig* file from default location. For example on Linux it is `~/.kube`, but you can use *kubeconfig* file at different path and even with different name. Just set the configuration file location as KUBECONFIG environment variable in your command line terminal where you want to execute `kubectl` commands.
+When execute a `kubectl` command first it tries to read the *kubeconfig* file from default location. For example on Linux it is `~/.kube` and on Windows it is `c:\Users\<USERNAME>\.kube`, but you can use *kubeconfig* file at different path and even with different name. Just set the configuration file location as KUBECONFIG environment variable in your command line terminal where you want to execute `kubectl` commands.
 
 Linux:
 
@@ -335,7 +335,7 @@ Scroll down to open the *get LoadBalancer public IP address* step and check the 
 
 ![alt text](images/wercker.application.26.png)
 
-Open a new browser window or tab and open your sample application using the following URL: `https://PUBLIC_IP_ADDRESS/USERNAME`. Where the USERNAME is your Oracle Container Pipelines (former Wercker) user name. It should be a similar to: `https://129.213.15.72/johnasmith`
+Open a new browser window or tab and open your sample application using the following URL: `https://PUBLIC_IP_ADDRESS/USERNAME/`. Where the USERNAME is your Oracle Container Pipelines (former Wercker) user name. It should be a similar to: `https://129.213.15.72/johnasmith/`
 
 Due to the reason that the proper certification hasn't been configured you get a security warning. Ignore and allow to open the page.
 
@@ -352,7 +352,7 @@ Find the browser window/tab where you left open [http://localhost:8001/ui](http:
 
 Kubernetes supports multiple virtual clusters backed by the same physical cluster. These virtual clusters are called namespaces. Namespaces are intended for use in environments with many users spread across multiple teams, or projects. Namespaces provide a scope for names. Names of resources need to be unique within a namespace, but not across namespaces.
 
-The sample application's Kubernetes deployment configuration created a new namespace for your application. To filter the deployments according namespaces on Oracle Container Engine select your namespace, what is your Oracle Pipelines (Wercker) user name on the left navigation menu.
+The sample application's Kubernetes deployment configuration created a new namespace for your application. To filter the deployments according namespaces on Oracle Container Engine select your namespace (namespace selector you will find above "Overview" link; namespace selector is not available when you select "Namespaces"; by default namespace selector is displaying the value "default"), what is your Oracle Pipelines (Wercker) user name on the left navigation menu.
 
 ![alt text](images/wercker.application.32.png)
 
@@ -404,19 +404,19 @@ The dashboard is nice, but mostly CLI is the preferred tool. So let's get famili
 
 In the previous step you scaled out your application using the Web UI now shrink it using `kubectl`. Open a terminal and if necessary set KUBECONFIG variable to point your kubeconfig file location. First list your pods.
 
-	$ kubectl get pod -n=johnasmith
+	$ kubectl get pod -n=<YOUR_WERCKER_ID>
 	NAME                                  READY     STATUS    RESTARTS   AGE
 	rest-jscreditscore-2526588690-4tvrm   1/1       Running   0          1d
 	rest-jscreditscore-2526588690-cc38l   1/1       Running   0          16m
 
-The two running, healthy pods listed. To decrease the number of pods simply set a new size for Replica Set use the scale command and identify the Replica Set using your deployment name. Please note and change(!) properly your namespace's name before execute the scale command. (In this example the namespace is *johnasmith* what you need to change.)
+The two running, healthy pods listed. To decrease the number of pods simply set a new size for Replica Set use the scale command and identify the Replica Set using your deployment name. Please note and change(!) properly your namespace's name before execute the scale command.
 
-	$ kubectl scale --replicas=1 deployment/rest-jscreditscore -n=johnasmith
+	$ kubectl scale --replicas=1 deployment/rest-jscreditscore -n=<YOUR_WERCKER_ID>
 	deployment "rest-jscreditscore" scaled
 
 The scale down is fast so probably when you refresh your Web UI (dashboard) you already can see only one pod is running. You can also check the number of pods using the previous *get pod* command. Instead of this get more detail about your deployment using the following command. (Don't forget to change the namespace parameter value.)
 
-	$ kubectl describe deployment rest-jscreditscore -n=johnasmith
+	$ kubectl describe deployment rest-jscreditscore -n=<YOUR_WERCKER_ID>
 	Name:                   rest-jscreditscore
 	Namespace:              johnasmith
 	CreationTimestamp:      Mon, 04 Dec 2017 16:35:44 -0500
@@ -464,5 +464,5 @@ The event is about the scale down operation.
 
 The clean up is easy, simply delete your namespace what will destroy all the objects defined within your namespace. Using `kubectl` CLI issue the following command (Don't forget to replace the name of your namespace):
 
-	$ kubectl delete namespace johnasmith
+	$ kubectl delete namespace <YOUR_WERCKER_ID>
 	namespace "johnasmith" deleted
