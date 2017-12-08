@@ -2,6 +2,8 @@
 
 Make sure you are signed in to [https://github.com](https://github.com) and [https://app.wercker.com](https://app.wercker.com). It is recommended to open two browser windows/tabs [https://github.com](https://github.com) and [https://app.wercker.com](https://app.wercker.com) because you need to use both of them in parallel.
 
+In this tutorial we automatically create namespaces in the kubernetes cluster based on your username in Oracle Container Pipelines. The namespace in kubernetes can not contain any uppercase character. So if your username contains uppercase characters please change it inside the profile.
+
 The use case for the simplified Continuous Integration/Continuous Deployment (CI/CD) is the following using Oracle Container Pipelines:
 
 1. Get the application sources
