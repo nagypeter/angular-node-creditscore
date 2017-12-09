@@ -2,7 +2,7 @@
 
 Make sure you are signed in to [https://github.com](https://github.com) and [https://app.wercker.com](https://app.wercker.com). It is recommended to open two browser windows/tabs for [https://github.com](https://github.com) and [https://app.wercker.com](https://app.wercker.com) because you need to use both of them in parallel.
 
-The use case for Application Lifecycle Management is the following simplified scenario:
+The first use case for Application Lifecycle Management is the following simplified scenario which includes a github pull and merge request:
 
 1. Change the context path of the backend microservice using a new branch.
 2. Commit the changes and check the CI/CD workflow. The non-master branch executes the test route.
