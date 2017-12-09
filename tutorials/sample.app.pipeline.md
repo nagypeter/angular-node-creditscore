@@ -329,6 +329,15 @@ Select **Runs** tab to monitor the workflow status.
 
 ![alt text](images/wercker.application.24.png)
 
+** TO DO **
+When the pipeline "push-to-OCR" is completed (marked with green background) yu may verify that the image with the app was really pushed to Oracle Container Registry. To verify this click "Releases" and observe that the image was recently pushed to repository "USERNAME/angular-node-creditscore".
+
+TO DO SCREENSHOT
+
+After this click on "Back" button in the browser or click on "Pipelines" and select "angular-node-creditscore" application.
+
+** END OF TO DO **
+
 When the workflow is completed click on the last *deploy-to-Prod* pipeline.
 
 ![alt text](images/wercker.application.25.png)
