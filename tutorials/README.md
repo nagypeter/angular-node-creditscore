@@ -14,6 +14,7 @@ Oracle services being used during the hands-on are the following:
 + **Oracle Container Engine** is an Oracle managed Kubernetes Cluster enviroment to deploy and run container packaged applications.
 
 **Architecture**
+
 ![](images/oracle.container.native.png)
 
 ### Prerequisites ###
