@@ -18,6 +18,8 @@ This use case for Application Lifecycle Management demonstrates the desktop deve
 - Git client. [https://git-scm.com/downloads](https://git-scm.com/downloads)
 - Docker installed and running on your desktop. [https://docs.docker.com/engine/installation/](https://docs.docker.com/engine/installation/)
 
+A pre installed Linux environment including the required components available in [VirtualBox image (cando.v3.1.ova)](https://drive.google.com/open?id=0B0MXC4qaECO6M3lxTGZ1RVZjd1k) format. For use the image needs to be downloaded and imported.
+
 ### Install Oracle Container Pipelines CLI (Linux) ###
 
 open a terminal and use the following URL and `curl` command to download `wercker` CLI to `/usr/local/bin/`:
@@ -221,7 +223,7 @@ The latest build is related to *"panel header change"* and completes the non-mas
 
 ![alt text](images/wercker.change.22.png)
 
-The result has to be successful. If it is then you will use git client to merge this feature to master branch. However usually there has to be an approval process to review the changes what a developer promote to the master branch. First check your branches available then switch to master, merge patch2 and pust changes to master (remote repository):
+The result has to be successful. Now use *git* client to merge this feature to **master** branch. However usually there has to be an approval process to review the changes what a developer promote to the master branch, but now to simplify the use case the developer (you) are going to merge the tested changes. To do so first check your available branches then switch to **master**, merge **patch2** and push changes to **master** branch on the remote repository (*github.com*):
 
 	$ git branch
 	  master
@@ -333,13 +335,13 @@ Open the application in your browser at [http://localhost:3000](http://localhost
 
 ![alt text](images/wercker.change.32.png)
 
-Finally check the application's log using the `docker logs` command. You need the running container's ID or NAME so first run `docker ps` to get this information:
+Finally check the application's log using the `docker logs` command. You need the CONTAINER ID of your running container, thus first run `docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Status}}"` using output format focusing on the neccessary information:
 
-	$ docker ps
-	CONTAINER ID        IMAGE                                                                                        COMMAND                  CREATED             STATUS              PORTS                    NAMES
-	5411909415ae        wcr.io/johnasmith/angular-node-creditscore:master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150   "node /pipeline/so..."   5 minutes ago       Up 5 minutes        0.0.0.0:3000->3000/tcp   ecstatic_heyrovsky
+	$ docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Status}}"
+	CONTAINER ID        IMAGE                                                                                        STATUS
+	5411909415ae        wcr.io/johnasmith/angular-node-creditscore:master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150   Up 5 minutesovsky
 	
-	$ docker logs ecstatic_heyrovsky
+	$ docker logs 5411909415ae
 	Express server listening on port 3000
 	GET / 304 62ms
 	GET /js/angular_app.js 200 73ms - 138b
@@ -356,10 +358,10 @@ Finally check the application's log using the `docker logs` command. You need th
 
 Compare the values in the log what you provided on the user interface.
 
-Stop your container use `docker stop`:
+Stop your container use `docker stop` and the ID of the running container:
 
-	$ docker stop ecstatic_heyrovsky
-	ecstatic_heyrovsky
+	$ docker stop 5411909415ae
+	5411909415ae
 
 To remove your local images first use `docker images` to list available images on your desktop and get their IMAGE IDs or REPOSITORY:TAG what is necessary to delete. Execute the remove image command and specify which image you want to remove:
 
