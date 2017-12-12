@@ -111,7 +111,7 @@ Check the output, now it has to contain the server version information.
 
 ### Setup Ingress Controller ###
 
-The setup script available at: [https://raw.githubusercontent.com/nagypeter/kubernetes](https://raw.githubusercontent.com/nagypeter/kubernetes) and can be executed directly. The script creates a namespace called *shared-ingress* and will create Ingress Controller resources within this namespace. If you need to change the namespace then modify NAMESPACE variable in [*create-ingress.sh*](https://github.com/nagypeter/kubernetes/blob/master/ingress/create-ingress.sh) script before execute. (To modify *create-ingress.sh* script use `git clone` to get local copy of the scripts and execute locally. Or fork the repository and modify using github Web UI. In case of last don't forget to modify `curl` command properly.)
+The setup script available at: [https://raw.githubusercontent.com/nagypeter/kubernetes/master/ingress/create-ingress.sh](https://raw.githubusercontent.com/nagypeter/kubernetes/master/ingress/create-ingress.sh) and can be executed directly. The script creates a namespace called *shared-ingress* and will create Ingress Controller resources within this namespace. If you need to change the namespace then modify NAMESPACE variable in [*create-ingress.sh*](https://github.com/nagypeter/kubernetes/blob/master/ingress/create-ingress.sh) script before execute. (To modify *create-ingress.sh* script use `git clone` to get local copy of the scripts and execute locally. Or fork the repository and modify using github Web UI. In case of last don't forget to modify `curl` command properly.)
 
 	curl -LSs https://raw.githubusercontent.com/nagypeter/kubernetes/master/ingress/create-ingress.sh | sh
 
