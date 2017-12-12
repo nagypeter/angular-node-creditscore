@@ -308,7 +308,7 @@ Go back your application select **Pipelines** and your application (angular-node
 
 The pipelines can have independent variables per pipelines or *global* scope variables. To simplify the configuration define *global* scope variables. Click the **Workflow** tab then select **Environment** tab. Set the name and value pairs for the following configuration variables.
 
-+ **KUBERNETES\_ADDRESS** = Kubernetes Address with *https://* prefix
++ **KUBERNETES\_ADDRESS** = Copy the address from kubeconfig file (line 5) the address of the master. It shoud start with *https://* prefix
 + **KUBERNETES\_TOKEN** = your personal token
 
 When you need to add new variable click **Add** button which saves the current row and add a new one. You can use the **Protected** tick box to store safely your value e.g. personal token.
