@@ -81,7 +81,8 @@ deploy-to-oke:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: get svc -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}' --all-namespaces -
+        command: get svc -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}' --all-namespaces
+   
         
         
 
