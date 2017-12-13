@@ -65,12 +65,16 @@ deploy-to-oke:
         insecure-skip-tls-verify: true
         command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
         
+        
+        
+        
     - kubectl:
         name: create Ingress configuration
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
         command: create -f $WERCKER_ROOT/ingress.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
+        
         
     - kubectl:
         name: get LoadBalancer public IP address
