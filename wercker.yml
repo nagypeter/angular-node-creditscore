@@ -64,11 +64,10 @@ deploy-to-oke:
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
         command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
-
-    - script:
-        name: "Visualise Ingress config"
-        code: cat ingress.yml
-
+        
+        
+        
+        
     - kubectl:
         name: create Ingress configuration
         server: $KUBERNETES_MASTER
@@ -76,13 +75,22 @@ deploy-to-oke:
         insecure-skip-tls-verify: true
         command: create -f $WERCKER_ROOT/ingress.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
         
+        
     - kubectl:
         name: get LoadBalancer public IP address
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
         command: get svc -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}' --all-namespaces
+   
+        
+        
 
+    - script:
+        name: "Visualise Ingress config"
+        code: cat ingress.yml
+
+   
 rest-functional-test:
   steps:
     - script:
@@ -91,7 +99,7 @@ rest-functional-test:
               mkdir -p "/pipeline"
               node $WERCKER_ROOT/app.js &
               sleep 2
-              CREDITSCORE_URL=http://localhost:3000/creditscore
+              CREDITSCORE_URL=http://localhost:3000/creditscoreV2
               echo 'Microservice URL=' $CREDITSCORE_URL
               if curl -X POST -H "Content-Type: application/json" -X POST -d '{"firstname":"John","lastname":"Doe","dateofbirth":"01/01/2015","ssn":"111223333"}' $CREDITSCORE_URL | grep "firstname"
               then
@@ -110,7 +118,7 @@ ui-functional-test:
         name: Run UI test
         code: | 
               nohup node $WERCKER_ROOT/app.js > creditscoreapp.log &
-              echo 'Application URL to test: http://localhost:3000/creditscore'
+              echo 'Application URL to test: http://localhost:3000/creditscoreV2'
               protractor $WERCKER_ROOT/test/protractor.conf.js
               exit_status=$?
               echo 'CreditScore app server log :::START'
