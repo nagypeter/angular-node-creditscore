@@ -240,7 +240,7 @@ A pipeline can have its own base box (Docker container), like in this example th
 
 As you can see in this configuration we have the default pipeline *build* which executes the *npm-install* build, a *push-to-releases* pipeline which will upload the container packaged application to Oracle Container Registry, a *deploy-to-oke* pipeline which deploys the application to Oracle Container Engine and the *rest-functional-test* pipeline which is intended to test the application during the CI/CD workflow. You will create these pipelines in the next steps.
 
-Please also note the environment variables ($KUBERNETES_MASTER, $KUBERNETES_MASTER) usage which enables flexible configuration and safe authentication. When the pipelines and the workflow created you will define these variables and set the values.
+Please also note the environment variables ($KUBERNETES_MASTER, $KUBERNETES_TOKEN) usage which enables flexible configuration and safe authentication. When the pipelines and the workflow created you will define these variables and set the values.
 
 ### Define CI/CD workflow ###
 
