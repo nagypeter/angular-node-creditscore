@@ -28,7 +28,7 @@ deploy-to-oke:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: create namespace $WERCKER_APPLICATION_OWNER_NAME; echo 'namespace step'
+        command: apply -f $WERCKER_ROOT/kubernetes-namespace.yml
  
     - script:
         name: wait to create namespace
