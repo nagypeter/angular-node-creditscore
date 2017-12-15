@@ -41,7 +41,7 @@ deploy-to-oke:
         insecure-skip-tls-verify: true
         command: create namespace $WERCKER_APPLICATION_OWNER_NAME
  
-     - script:
+    - script:
         name: wait to create namespace
         code: sleep 10
  
