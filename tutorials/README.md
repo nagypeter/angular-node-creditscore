@@ -21,7 +21,7 @@ Oracle services being used during the hands-on are the following:
 
 - [Oracle Container Pipeline/Registry/Cluster](https://app.wercker.com) enabled account.
 - [Github account](sign.up.github.md)
-- [Oracle Container Engine instance provisioned on Oracle Cloud Infrastructure.](SettingUpContainerNative.pdf)
+- [Oracle Container Engine instance provisioned on Oracle Cloud Infrastructure.](FastStartSettingUpContainerNative_v3.pdf)
 - [Ingress controller](setup.ingress.controller.md)
 
 ### The topics to be covered in this hands-on session are: ###
