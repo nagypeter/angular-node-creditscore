@@ -23,14 +23,12 @@ deploy-to-oke:
         name: "Visualise Kubernetes config"
         code: cat kubernetes-deployment.yml
     
-    - script:
+    - kubectl:
         name: create namespace    
-        code: |
-              if kubectl get namespace --server=$KUBERNETES_MASTER --token=$KUBERNETES_TOKEN --insecure-skip-tls-verify=true| grep -q $WERCKER_APPLICATION_OWNER_NAME; then
-                echo $WERCKER_APPLICATION_OWNER_NAME 'namespace already exists'
-              else
-                kubectl create namespace $WERCKER_APPLICATION_OWNER_NAME --server=$KUBERNETES_MASTER --token=$KUBERNETES_TOKEN --insecure-skip-tls-verify=true
-              fi
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create namespace $WERCKER_APPLICATION_OWNER_NAME; echo 'namespace step'
  
     - script:
         name: wait to create namespace
