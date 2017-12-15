@@ -23,23 +23,14 @@ deploy-to-oke:
         name: "Visualise Kubernetes config"
         code: cat kubernetes-deployment.yml
     
-    - kubectl:
-        name: delete namespace
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: delete namespace $WERCKER_APPLICATION_OWNER_NAME --ignore-not-found=true
-        
     - script:
-        name: wait to delete namespace
-        code: sleep 60
-        
-    - kubectl:
         name: create namespace    
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: create namespace $WERCKER_APPLICATION_OWNER_NAME
+        code: |
+              if kubectl get namespace --server=$KUBERNETES_MASTER --token=$KUBERNETES_TOKEN --insecure-skip-tls-verify=true| grep -q $WERCKER_APPLICATION_OWNER_NAME; then
+                echo $WERCKER_APPLICATION_OWNER_NAME 'namespace already exists'
+              else
+                kubectl create namespace $WERCKER_APPLICATION_OWNER_NAME --server=$KUBERNETES_MASTER --token=$KUBERNETES_TOKEN --insecure-skip-tls-verify=true
+              fi
  
     - script:
         name: wait to create namespace
