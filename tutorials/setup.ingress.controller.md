@@ -29,6 +29,8 @@ Make sure to copy your token because you won't be able to get it again! Click **
 
 ### Install Kubernetes command line interface and connect to Oracle Container Engine ###
 
+### Install Kubernetes command line interface and connect to Oracle Container Engine instance ###
+
 #### Linux ####
 
 Download the latest release with the following `curl` command:
@@ -55,6 +57,27 @@ Verify the installation using the version command.
 At this step the server connection failure is normal. For easier usage it is recommended to setup the autocomplete for bash.
 
 	$ source <(kubectl completion bash)
+
+#### Windows ####
+
+To find out the latest stable version take a look at [https://storage.googleapis.com/kubernetes-release/release/stable.txt](https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+
+For example if latest stable version is: **v1.8.4** then construct the download link in the following way: *https://storage.googleapis.com/kubernetes-release/release/VERSION_NUMBER/bin/windows/amd64/kubectl.exe*. Thus in case of **v1.8.4** the link looks like this:
+
+[https://storage.googleapis.com/kubernetes-release/release/v1.8.4/bin/windows/amd64/kubectl.exe](https://storage.googleapis.com/kubernetes-release/release/v1.8.4/bin/windows/amd64/kubectl.exe)
+
+Once you have the executable binary add to your PATH variable.
+
+	set PATH=%PATH%;c:\download_folder\kubectl.exe
+
+Verify the installation using the version command.
+
+	C:\Users\pnagy>kubectl version
+	Client Version: version.Info{Major:"1", Minor:"7", GitVersion:"v1.7.0", GitCommit:"d3ada0119e776222f11ec7945e6d860061339aad", GitTreeState:"clean", BuildDate:"2
+	017-06-29T23:15:59Z", GoVersion:"go1.8.3", Compiler:"gc", Platform:"windows/amd64"}
+	Unable to connect to the server: dial tcp 192.168.99.100:8443: connectex: A connection attempt failed because the connected party did not properly respond after
+ 	a period of time, or established connection failed because connected host has failed to respond.
+
 
 After the successful installation you need to get the kubeconfig configuration file belongs to your cluster. 
 
