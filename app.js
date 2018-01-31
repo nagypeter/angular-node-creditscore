@@ -5,7 +5,7 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , creditscore = require('./routes/creditscore')
+  , creditscore = require('./routes/creditscoreV2')
   , http = require('http')
   , path = require('path');
 
@@ -28,7 +28,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.post('/creditscore', creditscore.score);
+app.post('/creditscoreV2', creditscore.score);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
