@@ -5,7 +5,7 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , creditscore = require('./routes/creditscore')
+  , creditscore = require('./routes/creditscoreV2')
   , http = require('http')
   , path = require('path');
 
