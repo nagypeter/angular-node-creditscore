@@ -143,7 +143,7 @@ You can access Dashboard using the kubectl command-line tool by running the foll
 	$ kubectl proxy
 	Starting to serve on 127.0.0.1:8001
 
-This command runs `kubectl` in a mode where it acts as a reverse proxy. It handles locating the apiserver and authenticating and make Dashboard available at [http://localhost:8001/ui](http://localhost:8001/ui). (If the short link doesn't work -typically above 1.7.x- try the full version: [http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy](http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy)) Please note the UI can only be accessed from the machine where the command is executed. Open the dashboard.
+This command runs `kubectl` in a mode where it acts as a reverse proxy. It handles locating the apiserver and authenticating and make Dashboard available at [http://localhost:8001/ui](http://localhost:8001/ui). (If the short link doesn't work -this is a bug most probably with version 1.8.5- try this: [http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy](http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy)) Please note the UI can only be accessed from the machine where the command is executed. Open the dashboard.
 
 ![alt text](images/wercker.application.31.png)
 
