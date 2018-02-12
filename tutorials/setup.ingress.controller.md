@@ -70,6 +70,14 @@ Once you have the executable binary add to your PATH variable.
 
 	set PATH=%PATH%;c:\download_folder\kubectl.exe
 
+#### macOS ####
+
+If you are on macOS and using Homebrew package manager, you can install with:
+
+	brew install kubectl
+
+#### Verify `kubectl` ####
+
 Verify the installation using the version command.
 
 	C:\Users\pnagy>kubectl version
