@@ -469,10 +469,3 @@ Please note the entry at the *Events*:
 	  Normal  ScalingReplicaSet  47s (x2 over 6h)  deployment-controller  Scaled down replica set rest-jscreditscore-2526588690 to 1
 
 The event is about the scale down operation.
-
-### Clean up (!) ###
-
-The clean up is easy, simply delete your namespace what will destroy all the objects defined within your namespace. Using `kubectl` CLI issue the following command (Don't forget to replace the name of your namespace):
-
-	$ kubectl delete namespace <YOUR_WERCKER_ID>
-	namespace "johnasmith" deleted
