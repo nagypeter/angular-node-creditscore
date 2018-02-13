@@ -127,9 +127,13 @@ Save the updated *kubeconfig*.
 
 When execute a `kubectl` command first it tries to read the *kubeconfig* file from default location. For example on Linux it is `~/.kube`, but you can use *kubeconfig* file at different path and even with different name. Just set the configuration file location as KUBECONFIG environment variable in your command line terminal where you want to execute `kubectl` commands.
 
-Linux:
+Linux (please specify the correct location of the downloaded configuration file):
 
 	export KUBECONFIG=~/Downloads/kubeconfig
+
+Windows (please specify the correct location of the downloaded configuration file):
+
+	set KUBECONFIG=c:\Downloads\kubeconfig
 
 Now `kubectl` is ready to use. Test again using the version option.
 
