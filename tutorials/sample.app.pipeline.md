@@ -57,6 +57,15 @@ At this step the server connection failure is normal. For easier usage it is rec
 
 	$ source <(kubectl completion bash)
 
+#### MacOS ####
+
+For MacOS, use the same sequence as described above for Linux, only replace the CURL command with the following:
+	$ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
+	
+Note the difference: you are using /bin/darwin/... instead of /bin/linux/...
+	
+	
+
 #### Windows ####
 
 To find out the latest stable version take a look at [https://storage.googleapis.com/kubernetes-release/release/stable.txt](https://storage.googleapis.com/kubernetes-release/release/stable.txt)
