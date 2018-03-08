@@ -243,7 +243,7 @@ Before you move forward please inspect the *wercker.yml*. The source is availabl
            
 
 The *wercker.yml* defines the configuration of your automation pipelines with a collection of Steps that you wish to execute.
-In your *wercker.yml* you can specify any pipeline you like. There is one special pipeline called `dev` which will only be executed when running it with the CLI using the wercker dev command. Examples of pipeline names: *build*, *push-to-releases, rest-functional-test*, etc.
+In your *wercker.yml* you can specify any pipeline you like. There might be one (our sample app doesn't contain it) the special pipeline called `dev` which will only be executed when running it with the CLI using the wercker dev command. Examples of pipeline names that exist in our sample app are *build*, *push-to-releases, rest-functional-test*, etc.
 
 A pipeline can have its own base box (Docker container), like in this example the *node:6.10* official Node.js Docker container. You can use different base boxes per pipeline.
 
