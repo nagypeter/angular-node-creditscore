@@ -76,7 +76,7 @@ For example if latest stable version is: **v1.8.4** then construct the download 
 
 Once you have the executable binary add to your PATH variable.
 
-	set PATH=%PATH%;c:\download_folder\kubectl.exe
+	set PATH=%PATH%;c:\download_folder\
 
 Verify the installation using the version command.
 
