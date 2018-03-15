@@ -41,7 +41,7 @@ Test the CLI using the *version* command
 	Git commit: d1e4586a9263e965c8d53be74031645dc08e99cc
 	No new version available
 
-For Mac installation visit [https://www.wercker.com/cli/install/osx](https://www.wercker.com/cli/install/osx). Currently Windows installer is not available.
+For Mac installation visit [http://devcenter.wercker.com/docs/cli/installation](http://devcenter.wercker.com/docs/cli/installation). Currently Windows installer is not available.
 
 ### Create local clone of the source repository ###
 
