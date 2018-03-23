@@ -2,6 +2,8 @@
 
 ### About this hands-on workshop ###
 
+This lab uses early access products of Managed Kubernetes and Docker Registry. The lab describes user interface as part of Wercker.com product. This early access user interface will be shutdown on April 23rd, 2018.
+
 This lab is designed for people with no prior experience with Docker, Node.js, AngularJS and want to learn the core concepts and basics of Container Native DevOps. 
 
 The demo application is a simple Credit Scoring application. It has a Node.js backend microservice which calculates the credit score based on name, date of birth and SSN. The application UI which invokes the backend miscroservice using REST interface is built on AngularJS.
