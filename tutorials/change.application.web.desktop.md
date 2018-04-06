@@ -84,7 +84,7 @@ Switch back to the browser where the [github.com](https://github.com) is already
 
 ![alt text](images/wercker.change.11.png)
 
-Using this page you can create a pull request to master branch. It is important to select the correct base and head. Most likely the default base (fork) is set to the original (*https://github.com/nagypeter/angular-node-creditscore*) repository. Change this base to your fork. Make sure the base fork has the master branch. The head fork defaults usually good, but please check the head fork points to your (forked) repository and the pull request based on the patch you created.
+Using this page you can create a pull request to master branch. It is important to select the correct base and head. Most likely the default base (fork) is set to the original (*https://github.com/nagypeter/angular-node-creditscore*) repository. **CHANGE THIS BASE TO YOUR FORK!!!!!!** Make sure the base fork has the master branch. The head fork defaults usually good, but please check the head fork points to your (forked) repository and the pull request based on the patch you created.
 
 ![alt text](images/wercker.change.12.png)
 
