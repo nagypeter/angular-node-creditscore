@@ -203,7 +203,7 @@ Please note the tag is basically the corresponding hash of the commit which trig
 
 The tag number is constructed from the git branch name and the hash of the git commit.
 
-Once you have the tag you can use `docker run` to pull and execute your container packaged application locally on your desktop: `docker run -d -p3000:3000 YOUR_DOCKER_USERNAME/angular-node-creditscore:master-66b016059e1f9be1cdda6719015acaf86daf3312` Don't forget to replace to your docker user name and the tag what you got in the previous step.
+Once you have the tag you can use `docker run` to pull and execute your container packaged application locally on your desktop: `docker run -d -p3000:3000 YOUR_DOCKER_USERNAME/angular-node-creditscore:master-YOUR_IMAGE_TAG_TO_BE_REPLACED` Don't forget to replace to your docker user name and the tag what you got in the previous step.
 
 	[oracle@localhost ~]$ docker run -d -p3000:3000 YOUR_DOCKER_USERNAME/angular-node-creditscore:master-66b016059e1f9be1cdda6719015acaf86daf3312
 	Unable to find image 'demo0001/angular-node-creditscore:master-66b016059e1f9be1cdda6719015acaf86daf3312' locally
