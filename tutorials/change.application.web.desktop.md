@@ -130,7 +130,7 @@ Find the full commit hash in the header of the merge details and note for the ne
 
 ![alt text](images/wercker.change.41.png)
 
-Once you have the commit hash construct the tag which has the following format: <BRANCH_NAME>-<COMMIT_HASH>. The branch name has to be *master*. Using the data above the tag is: `master-a56f55bae6c1ba2182f939abb44d34ecf2a5dcc3`. To run the modified application use *docker run* to pull and execute the specific (tagged) container packaged application locally on your desktop: `docker run -d -p3000:3000 YOUR_DOCKER_USERNAME/angular-node-creditscore:master-a56f55bae6c1ba2182f939abb44d34ecf2a5dcc3` Don't forget to replace to your docker user name and the tag what you got in the previous step.
+Once you have the commit hash construct the tag which has the following format: <BRANCH_NAME>-<COMMIT_HASH>. The branch name has to be *master*. Using the data above the tag is: `master-a56f55bae6c1ba2182f939abb44d34ecf2a5dcc3`. To run the modified application use *docker run* to pull and execute the specific (tagged) container packaged application locally on your desktop: `docker run -d -p3000:3000 YOUR_DOCKER_USERNAME/angular-node-creditscore:master-IMAGE_TAG_TO_BE_REPLACED` Don't forget to replace to your docker user name and the tag what you got in the previous step.
 
 	[oracle@localhost ~]$ docker run -d -p3000:3000 demo0001/angular-node-creditscore:master-a56f55bae6c1ba2182f939abb44d34ecf2a5dcc3
 	Unable to find image 'demo0001/angular-node-creditscore:master-a56f55bae6c1ba2182f939abb44d34ecf2a5dcc3' locally
