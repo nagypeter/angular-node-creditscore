@@ -5,13 +5,27 @@ build:
         name: A step that executes `npm install` command
         code: npm install  
 
+# pipeline to store container on Oracle registry
 push-to-releases:
   steps:
     # Push to public docker repo Container Registry (CR)
     - internal/docker-push:
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         cmd: node /pipeline/source/app.js
+        
+# pipeline to store container on Docker Hub
+push-to-dockerhub:
+    steps:
+      # Push to public docker repo
+      - internal/docker-push:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+          tag:  $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+          repository: $DOCKER_USERNAME/$WERCKER_APPLICATION_NAME
+          registry: https://index.docker.io/v2/
+          cmd: node /pipeline/source/app.js
 
+# pipeline to deploy application on kubernetes
 deploy-to-oke:
   box:
         id: alpine
@@ -66,6 +80,8 @@ deploy-to-oke:
         insecure-skip-tls-verify: true
         command: get svc -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}' --all-namespaces
 
+# pipeline to execute functional test on application's microservice endpoint
+# single curl invocation
 rest-functional-test:
   steps:
     - script:
@@ -85,6 +101,8 @@ rest-functional-test:
                   exit -1
               fi
 
+# pipeline to execute functional test
+# the test box prepared using headless chrome to execute ui test
 ui-functional-test:
   box:
     id: peternagy/chrome-protractor-headless-test:node9.2-chrome62
