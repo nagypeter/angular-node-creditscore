@@ -160,6 +160,7 @@ The **build** pipeline builds a Docker image. Check the image in the local repos
 	$ docker images
 	REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
 	local.creditscore   patch2              7436d6fc67ac        9 seconds ago        674MB
+	node                6.10                3f3928767182        10 months ago       661MB
 
 To test the containerized Credit Score Application you need to start the container. By default Docker containers can make connections to the outside world, but the outside world cannot connect to containers. If you want containers to accept incoming connections, you will need to provide `-p SPEC` option to explicitly define port mappings. In this case the application's default port #3000 will be bind to Docker host's port #3000:
 
@@ -207,7 +208,7 @@ The next step is to push the **patch2** local branch to your remote repository o
 	
 	 1 file changed, 2 insertions(+), 2 deletions(-)
 	$ git push origin patch2
-	Username for 'https://github.com': johnasmith
+	Username for 'https://github.com': demo0001
 	Password for 'https://johnasmith@github.com': 
 	Counting objects: 7, done.
 	Compressing objects: 100% (3/3), done.
@@ -251,7 +252,7 @@ The result has to be successful. Now use *git* client to merge this feature to *
 	nothing to commit, working directory clean
 	
 	$ git push origin master
-	Username for 'https://github.com': johnasmith
+	Username for 'https://github.com': demo0001
 	Password for 'https://johnasmith@github.com': 
 	Counting objects: 7, done.
 	Compressing objects: 100% (3/3), done.
@@ -263,91 +264,70 @@ The result has to be successful. Now use *git* client to merge this feature to *
 
 Open your browser again where [Oracle Container Pipelines](https://app.wercker.com) is opened and check the result of the latest build what was triggered by **master** push.
 
-![alt text](images/wercker.change.23.png)
+![alt text](images/wercker.change.23.desktop.png)
 
-Check the application deployed on Oracle Container Engine. If you don't remember the Public IP address of the NGINX (Ingress Controller) deployed on your Kuberenetes Cluster then click on the **deploy-to-Prod** pipeline.
+### Run containerized Credit Score sample application from Docker Hub ###
 
-![alt text](images/wercker.change.24.png)
+To test your production ready container packaged application run directly from the Docker Hub container registry. By default Docker Engine connects to Docker Hub registry (https://registry.hub.docker.com) so no need to set the desired registry configuration.
 
-Scroll down to open the *get LoadBalancer public IP address* step and check the log. At the end of the log copy the Public IP address of the Ingress controller.
+To run the latest version of container first you need to get the new tag for the latest container. Please note the tag is basically the corresponding hash of the commit which triggered the build. You can verify this assignment in the *wercker.yml* in the *push-to-dockerhub* pipeline definition:
 
-![alt text](images/wercker.change.25.png)
+	# pipeline to store container on Docker Hub
+	push-to-dockerhub:
+	    steps:
+	      # Push to public docker repo
+	      - internal/docker-push:
+	          username: $DOCKER_USERNAME
+	          password: $DOCKER_PASSWORD
+	          tag:  $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+	          repository: $DOCKER_USERNAME/$WERCKER_APPLICATION_NAME
+	          registry: https://index.docker.io/v2/
+	          cmd: node /pipeline/source/app.js
 
-Open a new browser window or tab and open your sample application using the following URL: `https://PUBLIC_IP_ADDRESS/USERNAME/`. Where the USERNAME is your Oracle Container Pipelines (former Wercker) user name. It should be a similar to: `https://129.213.15.72/johnasmith/`
+The tag number is constructed from the git branch name and the hash of the git commit. To get this string click on the **Run** tab in Oracle Pipelines and find the first part of the commit hash next to the name of the latest build. Click the string.
 
-Due to the reason that the proper certification hasn't been configured you get a security warning. Ignore and allow to open the page. Note the change what you made in the panel header.
+![alt text](images/wercker.change.27.desktop.png)
 
-![alt text](images/wercker.change.26.png)
+Find the full commit hash in the header of the merge details and note for the next step.
 
-### Run containerized Credit Score sample application from Oracle Container Registry ###
+![alt text](images/wercker.change.28.desktop.png)
 
-As an extra step which demonstrates interaction with Oracle Container Registry, run your production ready, containerized application directly from the container registry. By default Docker installation connects to Docker's registry (https://registry.hub.docker.com), but using login command you can use other registry to push and pull images. For a successful login you need to provide your username, your authentication token and the simplified URL of the registry. Oracle Container Releases sits on *wcr.io*. You need to have your personal authentication token what was generated and used during the workflow setup. (If you can not find that you can generate a new one. Click on your profile image at the top right corner of the page, select **Your profile** and click on **Manage settings** then select **Personal tokens** menu item. Define a token name e.g. your username and click **Generate**. Make sure to copy your token!)
+Once you have the commit hash construct the tag which has the following format: <BRANCH_NAME>-<COMMIT_HASH>. The branch name has to be *master*. Using the data above the tag is: `master-decbc9c62036e828cff27dafe242bd0e6fb1be60`. To run the modified application use *docker run* to pull and execute the specific (tagged) container packaged application locally on your desktop: `docker run -d -p3000:3000 YOUR_DOCKER_USERNAME/angular-node-creditscore:master-IMAGE_TAG_TO_BE_REPLACED` Don't forget to replace to your docker user name and the tag what you got in the previous step.
 
-	$ docker login --username johnasmith --password 0d82df20e90bae7f87840ecc5ac5616c9f44ea8434edadc1a8b63108c56bdf19 wcr.io
-	Login Succeeded
+	[oracle@localhost ~]$ docker run -d -p3000:3000 demo0001/angular-node-creditscore:master-decbc9c62036e828cff27dafe242bd0e6fb1be60
+	Unable to find image 'demo0001/angular-node-creditscore:master-decbc9c62036e828cff27dafe242bd0e6fb1be60' locally
+	master-decbc9c62036e828cff27dafe242bd0e6fb1be60: Pulling from demo0001/angular-node-creditscore
+	10a267c67f42: Already exists 
+	fb5937da9414: Already exists 
+	9021b2326a1e: Already exists 
+	dbed9b09434e: Already exists 
+	74bb2fc384c6: Already exists 
+	9b0a326fab3b: Already exists 
+	8089dfd0519a: Already exists 
+	f2be1898eb92: Already exists 
+	1dac9ca4e392: Pull complete 
+	Digest: sha256:c5d62c35a640f49a1c8cf763787af01db14308a641c1da684e97bfef57731f8f
+	Status: Downloaded newer image for demo0001/angular-node-creditscore:master-decbc9c62036e828cff27dafe242bd0e6fb1be60
+	8c1a259fb08ec3e322c891336a133e69459c0748548b837a7f0e9c6e26f60647
+	[oracle@localhost angular-node-creditscore]$ 
 
-If the login was successful use docker run command to start the container available at wcr.io registry under your repository. To find the correct tag name of the latest version of the container open [https://app.wercker.com](https://app.wercker.com) and select Releases. Click on *angular-node-creditscore* image.
+This version of image didn't exist locally so docker pulled from your Docker Hub repository. Using `docker ps` check the running container instance(s):
 
-![alt text](images/wercker.change.27.png)
-
-The image tag is constructed in the following way: BRANCH-GIT_COMMIT_SHA. So if you check the latest commit hash in master branch (what was the **patch2** merge) on github.com then you will find the image tag's number part. Open another browser window/tab and go to your repository on github.com and click **commits**.
-
-![alt text](images/wercker.change.28.png)
-
-Make sure the master branch is selected and click on the short number which is just the beginning of the SHA number. 
-
-![alt text](images/wercker.change.29.png)
-
-The changes belong to this specific commit appears and you can see the full SHA number. Please note this number.
-
-![alt text](images/wercker.change.30.png)
-
-Go back to Oracle Container Releases and find the image which has the same number in its tag. Click the the download icon and copy the full docker pull command using the copy button.
-
-![alt text](images/wercker.change.31.png)
-
-Copy and execute the command in your terminal to pull the image:
-
-	$ docker pull wcr.io/johnasmith/angular-node-creditscore:master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150
-	cd9a7cbe58f4: Pull complete 
-	6b22806153e5: Pull complete 
-	da3f2dc8c5f5: Pull complete 
-	c4aa92007b30: Pull complete 
-	1dee035a3f3e: Pull complete 
-	f574b9052ada: Pull complete 
-	8399bf571480: Pull complete 
-	cb539a5e18fa: Pull complete 
-	210888c8fcfb: Pull complete 
-	Digest: sha256:6916ba1bff73e5b5a9da4865127161179f2725f416cfcbcfb46f23e4b5c44052
-	Status: Downloaded newer image for wcr.io/johnasmith/angular-node-creditscore:master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150
-
-List the available docker images on your desktop:
-
-	$ docker images
-	REPOSITORY                                   TAG                                               IMAGE ID            CREATED             SIZE
-	wcr.io/johnasmith/angular-node-creditscore   master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150   cae287ca7505        About an hour ago   662MB
-	local.creditscore                            patch2                                            7436d6fc67ac        2 hours ago         674MB
-
-Now run your image what was pulled in the previous step from wcr.io:
-
-	$ docker run -d -p3000:3000 wcr.io/johnasmith/angular-node-creditscore:master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150
-	5411909415ae530580737a62b6cb2151b3fb95aa90d49f7074895ad24435c313
-	
 	$ docker ps
-	CONTAINER ID        IMAGE                                                                                        COMMAND                  CREATED             STATUS              PORTS                    NAMES
-	5411909415ae        wcr.io/johnasmith/angular-node-creditscore:master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150   "node /pipeline/so..."   4 seconds ago       Up 3 seconds        0.0.0.0:3000->3000/tcp   ecstatic_heyrovsky
-	
-Open the application in your browser at [http://localhost:3000](http://localhost:3000) and fill the required data and click **Score**.
+	CONTAINER ID        IMAGE                                                                               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+	8c1a259fb08e        demo0001/angular-node-creditscore:master-decbc9c62036e828cff27dafe242bd0e6fb1be60   "node /pipeline/sour…"   47 seconds ago      Up 45 seconds       0.0.0.0:3000->3000/tcp   hungry_banach
+
+Open the application in your browser at [http://localhost:3000](http://localhost:3000) and fill the required test data and click **Score**.
 
 ![alt text](images/wercker.change.32.png)
 
 Finally check the application's log using the `docker logs` command. You need the CONTAINER ID of your running container, thus first run `docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Status}}"` using output format focusing on the neccessary information:
 
 	$ docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Status}}"
-	CONTAINER ID        IMAGE                                                                                        STATUS
-	5411909415ae        wcr.io/johnasmith/angular-node-creditscore:master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150   Up 5 minutesovsky
+	CONTAINER ID        IMAGE                                                                               STATUS
+	8c1a259fb08e        demo0001/angular-node-creditscore:master-decbc9c62036e828cff27dafe242bd0e6fb1be60   Up 2 minutes
 	
-	$ docker logs 5411909415ae
+	$ docker logs 8c1a259fb08e
 	Express server listening on port 3000
 	GET / 304 62ms
 	GET /js/angular_app.js 200 73ms - 138b
@@ -366,18 +346,28 @@ Compare the values in the log what you provided on the user interface.
 
 Stop your container use `docker stop` and the ID of the running container:
 
-	$ docker stop 5411909415ae
-	5411909415ae
+	$ docker stop 8c1a259fb08e
+	8c1a259fb08e
 
 To remove your local images first use `docker images` to list available images on your desktop and get their IMAGE IDs or REPOSITORY:TAG what is necessary to delete. Execute the remove image command and specify which image you want to remove:
 
 	$ docker images
-	REPOSITORY                                   TAG                                               IMAGE ID            CREATED             SIZE
-	wcr.io/johnasmith/angular-node-creditscore   master-fdf35b1139f2d8bc0a5f99e7d0b7786f764a6150   cae287ca7505        About an hour ago   662MB
-	local.creditscore                            patch2                                            7436d6fc67ac        2 hours ago         674MB
+	REPOSITORY                          TAG                                               IMAGE ID            CREATED             SIZE
+	demo0001/angular-node-creditscore   master-decbc9c62036e828cff27dafe242bd0e6fb1be60   5368fce00080        About an hour ago   691MB
+	local.creditscore                   patch2                                            e9472d086988        2 hours ago         693MB
+	node                                6.10                                              3f3928767182        10 months ago       661MB	 
 	
 	$ docker rmi -f local.creditscore:patch2
 	Untagged: local.creditscore:patch2
-	Deleted: sha256:7436d6fc67acdf9e673b499ff7561ebd9c95643c06c647106370842f4dbcf8c6
-	
-	
+	Deleted: sha256:e9472d086988b375d015e59105feb4cae6d15fc516f25046b2619db48128110a
+
+To clean up you may want to remove all other images. To remove all(!) local images use `docker rmi -f $(docker images -q)`.
+
+	$ docker rmi -f $(docker images -q)
+	Untagged: demo0001/angular-node-creditscore:master-decbc9c62036e828cff27dafe242bd0e6fb1be60
+	Untagged: demo0001/angular-node-creditscore@sha256:c5d62c35a640f49a1c8cf763787af01db14308a641c1da684e97bfef57731f8f
+	Deleted: sha256:5368fce00080eef16381f09e63e2274a1c50da57c8fd12687d1a82154c8f634e
+	Untagged: node:6.10
+	Untagged: node@sha256:39c92a576b42e5bee1b46bd283c7b260f8c364d8826ee07738f77ba74cc5d355
+	Deleted: sha256:3f39287671828e60b8cc4c9643bad6ffac661de48f1ca8e48bbb2ef728f96356
+
