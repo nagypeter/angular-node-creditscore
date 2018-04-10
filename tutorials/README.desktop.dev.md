@@ -27,7 +27,7 @@ Services being used during the hands-on are the following:
 
 1. [Create Oracle Container Pipeline to build, test and package sample application](sample.app.desktop.pipeline.md)
 2. [Application Lifecycle Management (Web - Github)](change.application.web.desktop.md)
-3. [Application Lifecycle Management (Desktop - Oracle Container Pipelines CLI)](change.application.desktop.md)
+3. [Application Lifecycle Management (Desktop - Oracle Container Pipelines CLI)](change.application.desktop.dockerhub.md)
 
 ### License ###
 Copyright (c) 2014, 2016 Oracle and/or its affiliates
