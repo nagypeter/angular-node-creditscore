@@ -90,7 +90,7 @@ rest-functional-test:
               mkdir -p "/pipeline"
               node $WERCKER_ROOT/app.js &
               sleep 2
-              CREDITSCORE_URL=http://localhost:3000/creditscore
+              CREDITSCORE_URL=http://localhost:3000/creditscoreV2
               echo 'Microservice URL=' $CREDITSCORE_URL
               if curl -X POST -H "Content-Type: application/json" -X POST -d '{"firstname":"John","lastname":"Doe","dateofbirth":"01/01/2015","ssn":"111223333"}' $CREDITSCORE_URL | grep "firstname"
               then
