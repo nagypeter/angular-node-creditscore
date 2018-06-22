@@ -1,0 +1,10 @@
+{
+  "runtime":{
+    "majorVersion":"8"
+  },
+  "command": "node app.js",
+  "release": {},
+  "notes": "",
+  "type":"web",
+  "home": "/creditscore"
+}
